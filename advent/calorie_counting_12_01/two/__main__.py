@@ -5,6 +5,9 @@ from heapq import heapify, heappop
 
 CURRENT_DIR = pathlib.Path(__file__).parent
 
+from collections import Counter
+
+
 if __name__ == "__main__":
     with (CURRENT_DIR / "input.txt").open() as f:
         elves = read_elves(f)
