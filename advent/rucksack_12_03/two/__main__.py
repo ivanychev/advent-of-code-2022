@@ -1,6 +1,6 @@
 import pathlib
 
-from advent.rucksack_12_03.reader import read_rucksacks, read_rucksack_groups
+from advent.rucksack_12_03.reader import read_rucksack_groups, read_rucksacks
 
 CURRENT_DIR = pathlib.Path(__file__).parent
 

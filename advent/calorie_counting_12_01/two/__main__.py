@@ -1,11 +1,9 @@
 import pathlib
-
-from advent.calorie_counting_12_01.inventory import read_elves
 from heapq import heapify, heappop
 
-CURRENT_DIR = pathlib.Path(__file__).parent
+from advent.calorie_counting_12_01.inventory import read_elves
 
-from collections import Counter
+CURRENT_DIR = pathlib.Path(__file__).parent
 
 
 if __name__ == "__main__":

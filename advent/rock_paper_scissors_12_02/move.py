@@ -1,4 +1,5 @@
 import abc
+
 from typing_extensions import Self
 
 from advent.rock_paper_scissors_12_02.outcome import Outcome

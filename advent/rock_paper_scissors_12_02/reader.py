@@ -1,4 +1,4 @@
-from typing import TextIO, Iterable
+from typing import Iterable, TextIO
 
 from advent.rock_paper_scissors_12_02.game import Game
 from advent.rock_paper_scissors_12_02.move import Move
@@ -27,8 +27,8 @@ def read_games_with_results(f: TextIO) -> Iterable[Game]:
 
 
 if __name__ == "__main__":
-    from io import StringIO
     import textwrap
+    from io import StringIO
 
     buf = StringIO()
     buf.write(

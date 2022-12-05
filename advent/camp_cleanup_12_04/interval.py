@@ -1,5 +1,6 @@
 from operator import attrgetter
 from typing import NamedTuple
+
 from typing_extensions import Self
 
 

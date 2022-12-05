@@ -1,6 +1,6 @@
 from functools import reduce
 from itertools import chain
-from typing import NamedTuple, Tuple, FrozenSet
+from typing import FrozenSet, NamedTuple, Tuple
 
 from typing_extensions import Self
 

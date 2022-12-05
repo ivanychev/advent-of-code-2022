@@ -1,6 +1,6 @@
 from typing import NamedTuple
 
-from advent.rock_paper_scissors_12_02.move import Move, Rock, Paper, Scissors
+from advent.rock_paper_scissors_12_02.move import Move, Paper, Rock, Scissors
 
 
 class Game(NamedTuple):

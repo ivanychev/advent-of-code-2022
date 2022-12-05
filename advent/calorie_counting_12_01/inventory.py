@@ -1,5 +1,5 @@
-from functools import cached_property
-from typing import NamedTuple, TextIO, Iterable
+from typing import Iterable, NamedTuple, TextIO
+
 from typing_extensions import Self
 
 
