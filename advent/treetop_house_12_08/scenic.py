@@ -5,7 +5,7 @@ from typing import MutableSequence, NamedTuple
 
 from typing_extensions import Self
 
-from advent.treetop_house_12_08.grid import TreeGrid, Tree
+from advent.treetop_house_12_08.grid import Tree, TreeGrid
 
 
 def _fill_scenic_visitor_factory(scenic_grid: list[MutableSequence[int]]):

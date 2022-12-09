@@ -1,5 +1,4 @@
 import pathlib
-from pprint import pprint
 
 from advent.treetop_house_12_08.reader import read_grid
 from advent.treetop_house_12_08.visibility import VisibilityMap

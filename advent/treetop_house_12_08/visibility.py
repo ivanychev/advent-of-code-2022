@@ -1,6 +1,6 @@
 from array import array
 from functools import partial
-from typing import NamedTuple, MutableSequence
+from typing import MutableSequence, NamedTuple
 
 from typing_extensions import Self
 
