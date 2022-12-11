@@ -1,23 +1,21 @@
 import pathlib
+from heapq import nlargest
 
-from advent.no_space_left_12_07.filesystem import DirectoryNode, Node
-from advent.no_space_left_12_07.reader import read_tokens
+from advent.monkey_11_12.reader import read_monkeys
 
 CURRENT_DIR = pathlib.Path(__file__).parent
-
-MAX_DIR_SIZE = 100000
+ROUNDS = 20
 
 if __name__ == "__main__":
-
-    total_size = 0
-
-    def add_size(d: DirectoryNode):
-        global total_size
-        if d.size() <= MAX_DIR_SIZE:
-            total_size += d.size()
-
     with (CURRENT_DIR / "input.txt").open() as f:
-        tokens = read_tokens(f)
-        root = DirectoryNode.scan_commands(tokens)
-        root.visit(predicate=Node.is_directory, callback=add_size)
-    print(total_size)
+        ordered_monkeys = read_monkeys(
+            f, worry_level_change_on_inspection=lambda worry: worry // 3
+        )
+
+        for _ in range(ROUNDS):
+            for monkey in ordered_monkeys:
+                monkey.inspect_items()
+
+        registry = ordered_monkeys[0].monkey_registry
+        largest_inspections = nlargest(2, (m.insected_count for m in registry.values()))
+        print(largest_inspections[0] * largest_inspections[1])

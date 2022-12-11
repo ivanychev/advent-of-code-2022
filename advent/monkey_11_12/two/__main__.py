@@ -1,30 +1,27 @@
 import pathlib
+from heapq import nlargest
+from math import lcm
 
-from advent.no_space_left_12_07.filesystem import DirectoryNode, Node
-from advent.no_space_left_12_07.reader import read_tokens
+from tqdm import tqdm
+
+from advent.monkey_11_12.reader import read_monkeys
 
 CURRENT_DIR = pathlib.Path(__file__).parent
-
-TOTAL_DISK = 70000000
-NEEDED_SPACE = 30000000
-
+ROUNDS = 10000
 
 if __name__ == "__main__":
-
     with (CURRENT_DIR / "input.txt").open() as f:
-        tokens = read_tokens(f)
-    root = DirectoryNode.scan_commands(tokens)
-    occupied = root.size()
-    need_to_free_up = NEEDED_SPACE - (TOTAL_DISK - occupied)
+        ordered_monkeys = read_monkeys(
+            f, worry_level_change_on_inspection=lambda worry: worry
+        )
+        worry_mod = lcm(*[m.test_divisible_by for m in ordered_monkeys])
+        for m in ordered_monkeys:
+            m.set_worry_level_change_on_inspection(lambda worry: worry % worry_mod)
 
-    best_candidate: DirectoryNode | None = None
+        for _ in tqdm(range(ROUNDS)):
+            for monkey in ordered_monkeys:
+                monkey.inspect_items()
 
-    def update_candidate(d: DirectoryNode):
-        global best_candidate
-        if d.size() < need_to_free_up:
-            return
-        if not best_candidate or best_candidate.size() > d.size():
-            best_candidate = d
-
-    root.visit(predicate=Node.is_directory, callback=update_candidate)
-    print(best_candidate.size())
+        registry = ordered_monkeys[0].monkey_registry
+        largest_inspections = nlargest(2, (m.insected_count for m in registry.values()))
+        print(largest_inspections[0] * largest_inspections[1])
