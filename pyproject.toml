@@ -8,6 +8,7 @@ authors = ["Sergey Ivanychev <sergeyivanychev@gmail.com>"]
 python = ">=3.10,<3.11"
 typing-extensions = "^4.4.0"
 tqdm = "^4.64.1"
+more-itertools = "^9.0.0"
 
 [tool.poetry.dev-dependencies]
 black = "^22.10.0"

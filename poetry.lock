@@ -55,6 +55,14 @@ typing-inspect = ">=0.4.0"
 dev = ["Sphinx (>=5.1.1)", "black (==22.10.0)", "coverage (>=4.5.4)", "fixit (==0.1.1)", "flake8 (>=3.7.8,<5)", "hypothesis (>=4.36.0)", "hypothesmith (>=0.0.4)", "jinja2 (==3.1.2)", "jupyter (>=1.0.0)", "maturin (>=0.8.3,<0.14)", "nbsphinx (>=0.4.2)", "prompt-toolkit (>=2.0.9)", "pyre-check (==0.9.9)", "setuptools-rust (>=1.5.2)", "setuptools-scm (>=6.0.1)", "slotscheck (>=0.7.1)", "sphinx-rtd-theme (>=0.4.3)", "ufmt (==2.0.1)", "usort (==1.0.5)"]
 
 [[package]]
+name = "more-itertools"
+version = "9.0.0"
+description = "More routines for operating on iterables, beyond itertools"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
 name = "mypy-extensions"
 version = "0.4.3"
 description = "Experimental type system extensions for programs checked with the mypy typechecker."
@@ -178,7 +186,7 @@ typing-extensions = ">=3.7.4"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.10,<3.11"
-content-hash = "c79dc08606183d35160d382a3d45cdd99aa4ba14611f8009638e57fc495283e9"
+content-hash = "446d99a97b85c08443c45ae023709602e52d1dd27ad9a0c1f65b842cbfb294d7"
 
 [metadata.files]
 black = [
@@ -243,6 +251,10 @@ libcst = [
     {file = "libcst-0.4.9-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:3822056dc13326082362db35b3f649e0f4a97e36ddb4e487441da8e0fb9db7b3"},
     {file = "libcst-0.4.9-cp39-cp39-win_amd64.whl", hash = "sha256:183636141b839aa35b639e100883813744523bc7c12528906621121731b28443"},
     {file = "libcst-0.4.9.tar.gz", hash = "sha256:01786c403348f76f274dbaf3888ae237ffb73e6ed6973e65eba5c1fc389861dd"},
+]
+more-itertools = [
+    {file = "more-itertools-9.0.0.tar.gz", hash = "sha256:5a6257e40878ef0520b1803990e3e22303a41b5714006c32a3fd8304b26ea1ab"},
+    {file = "more_itertools-9.0.0-py3-none-any.whl", hash = "sha256:250e83d7e81d0c87ca6bd942e6aeab8cc9daa6096d12c5308f3f92fa5e5c1f41"},
 ]
 mypy-extensions = [
     {file = "mypy_extensions-0.4.3-py2.py3-none-any.whl", hash = "sha256:090fedd75945a69ae91ce1303b5824f428daf5a028d2f6ab8a299250a846f15d"},
