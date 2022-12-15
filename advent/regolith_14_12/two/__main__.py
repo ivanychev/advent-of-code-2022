@@ -8,6 +8,7 @@ DROP_POINT = (500, 0)
 
 if __name__ == "__main__":
     with (CURRENT_DIR / "input.txt").open() as f:
+
         rock_field = read_rocks(f)
 
         highest_y = max(y for (_, y) in rock_field.field)
