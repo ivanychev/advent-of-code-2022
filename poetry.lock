@@ -201,8 +201,8 @@ typing-extensions = ">=3.7.4"
 
 [metadata]
 lock-version = "1.1"
-python-versions = ">=3.10,<3.11"
-content-hash = "6a8b428fb56e45656b3da25dc23f4162ee4fb2363c319e2aedad0c9a875165d4"
+python-versions = ">=3.10,<4"
+content-hash = "f1dd606747d2a127e8a1841deade2276a8b02e8ddb6b73b788dece509a772992"
 
 [metadata.files]
 black = [

@@ -137,18 +137,20 @@ class NetworkState:
 
 
 N = 0
-
+MASK = 2**32 - 1
 
 def print_every_n(o, n):
     global N
-    N += 1
+    N = (N + 1) & MASK
     if not N % n:
+        import gc
+        gc.collect()
         print(o)
 
 
 @functools.lru_cache(None)
 def max_cum_pressure(state: NetworkState) -> int:
-    print_every_n(state, 30000)
+    print_every_n(state, 1000000)
     if not state.minutes_left:
         return 0
     max_pressure = float("-inf")
