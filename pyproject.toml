@@ -10,12 +10,6 @@ typing-extensions = "^4.4.0"
 tqdm = "^4.64.1"
 more-itertools = "^9.0.0"
 sortedcontainers = "^2.4.0"
-networkx = "^2.8.8"
-matplotlib = "^3.6.2"
-pyvis = "^0.3.1"
-jupyter = "^1.0.0"
-jupyterlab = "^3.5.1"
-numba = "^0.56.4"
 frozendict = "^2.3.4"
 
 [tool.poetry.dev-dependencies]
