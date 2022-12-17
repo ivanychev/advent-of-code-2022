@@ -26,7 +26,6 @@ if __name__ == "__main__":
             explorers_states=tuple(
                 TransitionState(
                     status=TransitionStatus.STANDING,
-                    from_node=None,
                     to_node=None,
                     current=network.node_to_idx[STARTING_VALVE],
                     finish_at_minutes_left=None,

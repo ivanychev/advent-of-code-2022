@@ -81,7 +81,6 @@ class TransitionStatus(enum.IntEnum):
 @dataclasses.dataclass(slots=True, frozen=True)
 class TransitionState:
     status: TransitionStatus
-    from_node: int | None
     to_node: int | None
     current: int | None
     finish_at_minutes_left: int | None
@@ -183,7 +182,6 @@ def max_cum_pressure(state: NetworkState, compute_parallel: bool = False) -> int
             updated_states.append(
                 TransitionState(
                     status=TransitionStatus.STANDING,
-                    from_node=None,
                     to_node=None,
                     current=current,
                     finish_at_minutes_left=None,
@@ -220,7 +218,6 @@ def max_cum_pressure(state: NetworkState, compute_parallel: bool = False) -> int
                 possible_scenarios[idx].append(
                     TransitionState(
                         status=TransitionStatus.RUNNING,
-                        from_node=exp.current,
                         to_node=closed_idx,
                         current=None,
                         finish_at_minutes_left=state.minutes_left - time_to_reach,
@@ -231,7 +228,6 @@ def max_cum_pressure(state: NetworkState, compute_parallel: bool = False) -> int
             possible_scenarios[idx].append(
                 TransitionState(
                     status=TransitionStatus.FINISHED,
-                    from_node=None,
                     to_node=None,
                     current=exp.current,
                     finish_at_minutes_left=0,
