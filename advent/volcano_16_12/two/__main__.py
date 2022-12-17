@@ -34,4 +34,4 @@ if __name__ == "__main__":
                 for _ in range(2)
             ),
         )
-        print(max_cum_pressure(current_state))
+        print(max_cum_pressure(current_state, compute_parallel=True))

@@ -1,3 +1,4 @@
+import concurrent.futures
 import dataclasses
 import enum
 import functools
@@ -6,8 +7,10 @@ from array import array
 from collections import deque
 from dataclasses import dataclass
 from typing import Collection, Iterable, Sequence
+import gc
 
 from frozendict import frozendict
+from tqdm import tqdm
 
 from advent.volcano_16_12.valve import Valve
 
@@ -15,7 +18,7 @@ TIME_TO_OPEN = 1
 
 
 def _distances(
-    from_valve: str, to_valves: Collection[str], registry: dict[str, Valve]
+        from_valve: str, to_valves: Collection[str], registry: dict[str, Valve]
 ) -> dict[str, int]:
     to_valves = frozenset(to_valves)
     q: deque[tuple[str, int]] = deque([(from_valve, 0)])
@@ -44,7 +47,7 @@ class Network:
 
     @classmethod
     def from_valves(
-        cls, valves: list[Valve], registry: dict[str, Valve], starting_valve: str
+            cls, valves: list[Valve], registry: dict[str, Valve], starting_valve: str
     ):
         to_include = set([starting_valve] + [v.name for v in valves if v.rate])
         distances_map = tuple(
@@ -137,20 +140,31 @@ class NetworkState:
 
 
 N = 0
-MASK = 2**32 - 1
+MASK = 2 ** 32 - 1
 
-def print_every_n(o, n):
+
+def do_every_n(callable, n):
     global N
     N = (N + 1) & MASK
     if not N % n:
-        import gc
-        gc.collect()
-        print(o)
+        callable()
+
+
+def print_every_n(o, n):
+    do_every_n(lambda o=o: print(o), n)
+
+
+def gc_every_n(n):
+    do_every_n(gc.collect, n)
+
+
+def worker(t):
+    return t[0] + max_cum_pressure(t[1])
 
 
 @functools.lru_cache(None)
-def max_cum_pressure(state: NetworkState) -> int:
-    print_every_n(state, 1000000)
+def max_cum_pressure(state: NetworkState, compute_parallel: bool = False) -> int:
+    gc_every_n(100000)
     if not state.minutes_left:
         return 0
     max_pressure = float("-inf")
@@ -200,8 +214,8 @@ def max_cum_pressure(state: NetworkState) -> int:
         for closed_idx in exp.other_closed_valves(state):
             theres_closed = True
             if (
-                time_to_reach := state.network.distances_map[exp.current][closed_idx]
-                + TIME_TO_OPEN
+                    time_to_reach := state.network.distances_map[exp.current][closed_idx]
+                                     + TIME_TO_OPEN
             ) <= state.minutes_left:
                 possible_scenarios[idx].append(
                     TransitionState(
@@ -224,19 +238,35 @@ def max_cum_pressure(state: NetworkState) -> int:
                 )
             )
 
-    for state_combination in itertools.product(*possible_scenarios):
-        next_minutes_left = max(exp.finish_at_minutes_left for exp in state_combination)
-        if next_minutes_left >= state.minutes_left:
-            assert next_minutes_left >= state.minutes_left
-        max_pressure = max(
-            max_pressure,
-            state.pressure_if_wait(state.minutes_left - next_minutes_left)
-            + max_cum_pressure(
-                dataclasses.replace(
-                    state,
-                    minutes_left=next_minutes_left,
-                    explorers_states=state_combination,
-                )
-            ),
-        )
+    if compute_parallel:
+        with concurrent.futures.ProcessPoolExecutor(max_workers=6) as ex:
+            tasks = []
+            for state_combination in itertools.product(*possible_scenarios):
+                next_minutes_left = max(exp.finish_at_minutes_left for exp in state_combination)
+                tasks.append((
+                    state.pressure_if_wait(state.minutes_left - next_minutes_left),
+                    dataclasses.replace(
+                        state,
+                        minutes_left=next_minutes_left,
+                        explorers_states=state_combination,
+                    )
+                ))
+            max_pressure = max(max_pressure, max(tqdm(ex.map(worker, tasks), total=len(tasks))))
+    else:
+        for state_combination in itertools.product(*possible_scenarios):
+            next_minutes_left = max(exp.finish_at_minutes_left for exp in state_combination)
+            if next_minutes_left >= state.minutes_left:
+                assert next_minutes_left >= state.minutes_left
+
+            max_pressure = max(
+                max_pressure,
+                state.pressure_if_wait(state.minutes_left - next_minutes_left)
+                + max_cum_pressure(
+                    dataclasses.replace(
+                        state,
+                        minutes_left=next_minutes_left,
+                        explorers_states=state_combination,
+                    )
+                ),
+            )
     return max_pressure
