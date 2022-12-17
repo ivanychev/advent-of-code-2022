@@ -81,7 +81,6 @@ class TransitionStatus(enum.IntEnum):
 @dataclasses.dataclass(slots=True, frozen=True)
 class TransitionState:
     status: TransitionStatus
-    to_node: int | None
     current: int | None
     finish_at_minutes_left: int | None
 
@@ -161,7 +160,7 @@ def worker(t):
     return t[0] + max_cum_pressure(t[1])
 
 
-@functools.lru_cache(None)
+@functools.lru_cache(maxsize=1000000)
 def max_cum_pressure(state: NetworkState, compute_parallel: bool = False) -> int:
     gc_every_n(100000)
     if not state.minutes_left:
@@ -173,7 +172,7 @@ def max_cum_pressure(state: NetworkState, compute_parallel: bool = False) -> int
     for idx, exp in enumerate(state.explorers_states):
         if exp.finish_at_minutes_left == state.minutes_left:
             if exp.status == TransitionStatus.RUNNING:
-                current = exp.to_node
+                current = exp.current
                 state = state.open_valve(current)
             elif exp.status == TransitionStatus.FINISHED:
                 continue
@@ -182,7 +181,6 @@ def max_cum_pressure(state: NetworkState, compute_parallel: bool = False) -> int
             updated_states.append(
                 TransitionState(
                     status=TransitionStatus.STANDING,
-                    to_node=None,
                     current=current,
                     finish_at_minutes_left=None,
                 )
@@ -218,8 +216,7 @@ def max_cum_pressure(state: NetworkState, compute_parallel: bool = False) -> int
                 possible_scenarios[idx].append(
                     TransitionState(
                         status=TransitionStatus.RUNNING,
-                        to_node=closed_idx,
-                        current=None,
+                        current=closed_idx,
                         finish_at_minutes_left=state.minutes_left - time_to_reach,
                     )
                 )
@@ -228,7 +225,6 @@ def max_cum_pressure(state: NetworkState, compute_parallel: bool = False) -> int
             possible_scenarios[idx].append(
                 TransitionState(
                     status=TransitionStatus.FINISHED,
-                    to_node=None,
                     current=exp.current,
                     finish_at_minutes_left=0,
                 )

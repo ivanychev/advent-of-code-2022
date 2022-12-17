@@ -15,7 +15,7 @@ STARTING_VALVE = "AA"
 MINUTES = 26
 
 if __name__ == "__main__":
-    with (CURRENT_DIR / "input.txt").open() as f:
+    with (CURRENT_DIR / "test_input.txt").open() as f:
         valves, registry = read_valves(f)
         network = Network.from_valves(valves, registry, STARTING_VALVE)
 
@@ -26,7 +26,6 @@ if __name__ == "__main__":
             explorers_states=tuple(
                 TransitionState(
                     status=TransitionStatus.STANDING,
-                    to_node=None,
                     current=network.node_to_idx[STARTING_VALVE],
                     finish_at_minutes_left=None,
                 )
