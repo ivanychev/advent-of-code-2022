@@ -11,13 +11,14 @@ from monkey_map_22.reader import read_cube_and_path
 CURRENT_DIR = pathlib.Path(__file__).parent
 
 if __name__ == "__main__":
-    with (CURRENT_DIR / "test_input.txt").open() as f:
+    with (CURRENT_DIR / "input.txt").open() as f:
 
-        rotations = (0, 0, 0, 2, 1, 2)
+        rotations = (0, 0, 0, 3, 2, 0)
         side_map = [
-            [None, None, 0, None],
-            [3, 4, 1, None],
-            [None, None, 2, 5],
+            [None, 0, 5],
+            [None, 1, None],
+            [4, 2, None],
+            [3, None, None],
         ]
 
         cube, actions, initial_row_and_column = read_cube_and_path(
