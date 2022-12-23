@@ -18,8 +18,6 @@ class Valve:
     @classmethod
     def from_string(cls, s: str, registry: dict[str, Self]) -> Self:
         match = VALVE_RE.match(s.strip())
-        if not match:
-            breakpoint()
         d = match.groupdict()
         instance = cls(
             name=d["name"],
